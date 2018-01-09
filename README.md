@@ -1,5 +1,7 @@
 # Adminpro
 
+El desarrollo de este proyecto se hizo en el curso https://www.udemy.com/angular-avanzado-fernando-herrera
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.3.
 
 ## Development server
