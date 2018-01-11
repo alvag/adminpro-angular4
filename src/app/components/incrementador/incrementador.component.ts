@@ -9,8 +9,8 @@ export class IncrementadorComponent implements OnInit {
 
     @ViewChild("txtProgress") txtProgress: ElementRef;
 
-    @Input("leyenda") leyenda = "Leyenda";
-    @Input("progreso") progreso = 50;
+    @Input("leyenda") leyenda: string = "Leyenda";
+    @Input("progreso") progreso: number = 50;
 
     @Output() cambioValor: EventEmitter<number> = new EventEmitter();
 
