@@ -6,6 +6,7 @@ import { AppComponent } from "./app.component";
 import { LoginComponent } from "./login/login.component";
 import { RegisterComponent } from "./login/register.component";
 import { PagesModule } from "./pages/pages.module";
+import { SettingsService } from './services/settings.service';
 
 @NgModule({
     declarations: [
@@ -19,7 +20,7 @@ import { PagesModule } from "./pages/pages.module";
         APP_ROUTES,
         PagesModule
     ],
-    providers: [],
+    providers: [SettingsService],
     bootstrap: [ AppComponent ]
 })
 export class AppModule {
