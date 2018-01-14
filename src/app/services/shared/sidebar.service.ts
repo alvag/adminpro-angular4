@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 
 @Injectable()
 export class SidebarService {
-
     menu: any = [
         {
             titulo: "Principal",
@@ -19,11 +18,18 @@ export class SidebarService {
                 {
                     titulo: "Gráficas",
                     url: "/graficas1"
+                },
+                {
+                    titulo: "Promesas",
+                    url: "/promesas"
+                },
+                {
+                    titulo: "RXJS",
+                    url: "/rxjs"
                 }
             ]
         }
     ];
 
-    constructor() { }
-
+    constructor() {}
 }
