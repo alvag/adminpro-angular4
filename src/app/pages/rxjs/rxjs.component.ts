@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs/Observable";
-import { clearInterval } from "timers";
+// import { clearInterval } from "timers";
 
 @Component({
     selector: "app-rxjs",
