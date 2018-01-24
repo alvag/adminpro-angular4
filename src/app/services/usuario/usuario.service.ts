@@ -1,0 +1,18 @@
+import { Injectable } from "@angular/core";
+import { Usuario } from "../../models/usuario.model";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "../../../environments/environment";
+
+@Injectable()
+export class UsuarioService {
+    constructor(private http: HttpClient) {}
+
+    registrarUsuario(usuario: Usuario) {
+        let url = environment.API_URL + "usuario";
+
+        return this.http.post(url, usuario).map((response: any) => {
+            swal("Usuario creado", usuario.email, "success");
+            return response.usuario;
+        });
+    }
+}
