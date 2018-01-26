@@ -5,7 +5,19 @@ import { environment } from "../../../environments/environment";
 
 @Injectable()
 export class UsuarioService {
+    usuario: Usuario;
+    token: string;
+
     constructor(private http: HttpClient) {}
+
+    saveUserData(token: string, usuario: Usuario) {
+        localStorage.setItem("id", usuario._id);
+        localStorage.setItem("token", token);
+        localStorage.setItem("usuario", JSON.stringify(usuario));
+
+        this.usuario = usuario;
+        this.token = token;
+    }
 
     registrarUsuario(usuario: Usuario) {
         let url = environment.API_URL + "usuario";
@@ -25,9 +37,15 @@ export class UsuarioService {
 
         let url = environment.API_URL + "login";
         return this.http.post(url, usuario).map((response: any) => {
-            localStorage.setItem("id", response.usuario._id);
-            localStorage.setItem("token", response.token);
-            localStorage.setItem("usuario", JSON.stringify(response.usuario));
+            this.saveUserData(response.token, response.usuario);
+            return true;
+        });
+    }
+
+    loginGoogle(token: string) {
+        let url = environment.API_URL + "login/google";
+        return this.http.post(url, { token }).map((response: any) => {
+            this.saveUserData(response.token, response.usuario);
             return true;
         });
     }
