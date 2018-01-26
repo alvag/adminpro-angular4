@@ -6,11 +6,13 @@ import { Graficas1Component } from "./graficas1/graficas1.component";
 import { PagesComponent } from "./pages.component";
 import { AccountSettingsComponent } from "./account-settings/account-settings.component";
 import { PromesasComponent } from "./promesas/promesas.component";
+import { AuthGuard } from "../services/service.index";
 
 const pagesRoutes: Routes = [
     {
         path: "",
         component: PagesComponent,
+        canActivate: [AuthGuard],
         children: [
             {
                 path: "dashboard",

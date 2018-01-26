@@ -2,13 +2,16 @@ import { Injectable } from "@angular/core";
 import { Usuario } from "../../models/usuario.model";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
+import { Router } from "@angular/router";
 
 @Injectable()
 export class UsuarioService {
     usuario: Usuario;
-    token: string;
+    token: string = "";
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private router: Router) {
+        this.token = localStorage.getItem("token");
+    }
 
     saveUserData(token: string, usuario: Usuario) {
         localStorage.setItem("id", usuario._id);
@@ -17,6 +20,10 @@ export class UsuarioService {
 
         this.usuario = usuario;
         this.token = token;
+    }
+
+    isAuth(): boolean {
+        return this.token != null && this.token.length > 5;
     }
 
     registrarUsuario(usuario: Usuario) {
@@ -48,5 +55,13 @@ export class UsuarioService {
             this.saveUserData(response.token, response.usuario);
             return true;
         });
+    }
+
+    logOut() {
+        this.usuario = null;
+        this.token = "";
+        localStorage.removeItem("token");
+        localStorage.removeItem("usuario");
+        this.router.navigate(["/login"]);
     }
 }
