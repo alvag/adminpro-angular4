@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Usuario } from "../../models/usuario.model";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
 import { Router } from "@angular/router";
 
@@ -11,6 +11,7 @@ export class UsuarioService {
 
     constructor(private http: HttpClient, private router: Router) {
         this.token = localStorage.getItem("token");
+        this.usuario = JSON.parse(localStorage.getItem("usuario"));
     }
 
     saveUserData(token: string, usuario: Usuario) {
@@ -33,6 +34,27 @@ export class UsuarioService {
             swal("Usuario creado", usuario.email, "success");
             return response.usuario;
         });
+    }
+
+    actualizarUsuario(usuario: Usuario) {
+        let url = environment.API_URL + "usuario/" + usuario._id;
+
+        let headers = new HttpHeaders({
+            Authorization: "Bearer " + this.token,
+            "Content-Type": "application/json"
+        });
+
+        return this.http
+            .put(url, usuario, { headers: headers })
+            .map((response: any) => {
+                this.saveUserData(this.token, response.usuario);
+                swal(
+                    "Usuario Actualizado",
+                    "Datos actualizados correctamente.",
+                    "success"
+                );
+                return true;
+            });
     }
 
     login(usuario: Usuario, recordar: boolean = false) {

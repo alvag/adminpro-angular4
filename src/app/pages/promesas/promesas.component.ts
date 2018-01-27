@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { containsTree } from "@angular/router/src/url_tree";
+// import { containsTree } from "@angular/router/src/url_tree";
 
 @Component({
     selector: "app-promesas",

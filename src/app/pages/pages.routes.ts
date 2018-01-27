@@ -7,6 +7,7 @@ import { PagesComponent } from "./pages.component";
 import { AccountSettingsComponent } from "./account-settings/account-settings.component";
 import { PromesasComponent } from "./promesas/promesas.component";
 import { AuthGuard } from "../services/service.index";
+import { ProfileComponent } from "./profile/profile.component";
 
 const pagesRoutes: Routes = [
     {
@@ -33,6 +34,11 @@ const pagesRoutes: Routes = [
                 path: "account-settings",
                 component: AccountSettingsComponent,
                 data: { titulo: "Ajustes" }
+            },
+            {
+                path: "perfil",
+                component: ProfileComponent,
+                data: { titulo: "Perfil de Usuario" }
             },
             {
                 path: "promesas",

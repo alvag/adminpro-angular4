@@ -6,6 +6,7 @@ import { HeaderComponent } from "./header/header.component";
 import { BreadcrumbsComponent } from "./breadcrumbs/breadcrumbs.component";
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
+import { PipesModule } from "../pipes/pipes.module";
 
 @NgModule({
     declarations: [
@@ -15,8 +16,9 @@ import { NotFoundComponent } from "./not-found/not-found.component";
         NotFoundComponent
     ],
     imports: [
-        RouterModule,
-        CommonModule
+        RouterModule, 
+        CommonModule, 
+        PipesModule
     ],
     exports: [
         HeaderComponent,
@@ -25,5 +27,4 @@ import { NotFoundComponent } from "./not-found/not-found.component";
         NotFoundComponent
     ]
 })
-export class SharedModule {
-}
+export class SharedModule {}
