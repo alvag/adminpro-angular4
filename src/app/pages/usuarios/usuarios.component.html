@@ -1,0 +1,86 @@
+<div class="row  animated fadeIn">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <input #input (keyup)="buscarUsuarios(input.value)" type="text" class="form-control" placeholder="Buscar usuario">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="loading" class="row animated fadeIn">
+
+    <div class="col-12">
+        <div class="alert alert-warning text-center">
+            <strong>Cargando</strong>
+            <br>
+            <i class="fa fa-refresh fa-spin fa-2x"></i>
+            <br>
+            <span>Espere por favor</span>
+        </div>
+    </div>
+
+</div>
+
+<div class="row animated fadeIn">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h3 *ngIf="paginacion" class="card-title">Usuarios registrados (<small>{{paginacion.total}}</small>)</h3>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="w70">Imagen</th>
+                            <th>Correo</th>
+                            <th>Nombre</th>
+                            <th>Rol</th>
+                            <th>Login</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let usuario of usuarios">
+                            <td>
+                                <img [src]="usuario.img | imagen" alt="Fotografía de Perfil" class="w50 img-circle">
+                            </td>
+                            <td>{{usuario.email}}</td>
+                            <td>{{usuario.nombre}}</td>
+                            <td>
+                                <select [(ngModel)]="usuario.role" name="role" class="form-control">
+                                    <option value="ADMIN_ROLE">Administrador</option>
+                                    <option value="USER_ROLE">Usuario</option>
+                                </select>
+                            </td>
+                            <td>
+                                <label *ngIf="usuario.google; else normal" class="label label-danger">Google</label>
+                                <ng-template #normal>
+                                    <label class="label label-info">Normal</label>
+                                </ng-template>
+
+                            </td>
+                            <td>
+                                <button [disabled]="usuario._id === usuarioService.usuario._id" (click)="actualizarUsuario(usuario)" class="btn btn-primary">
+                                    <i class="fa fa-save"></i>
+                                </button>
+
+                                <button [disabled]="usuario._id === usuarioService.usuario._id" (click)="borrarUsuario(usuario)" class="btn btn-danger" title="Eliminar Usuario">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button (click)="getUsuarios(paginacion.previousPage)" [disabled]="paginacion && !paginacion.previousPage" class="btn btn-secondary">Anteriores</button>
+
+                <button (click)="getUsuarios(paginacion.nextPage)" [disabled]="paginacion && !paginacion.nextPage" class="btn btn-secondary">Siguientes</button>
+
+            </div>
+        </div>
+    </div>
+</div>

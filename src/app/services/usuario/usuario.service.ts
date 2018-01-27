@@ -52,7 +52,9 @@ export class UsuarioService {
         return this.http
             .put(url, usuario, { headers: headers })
             .map((response: any) => {
-                this.saveUserData(this.token, response.usuario);
+                if (response.usuario._id === this.usuario._id) {
+                    this.saveUserData(this.token, response.usuario);
+                }
                 swal(
                     "Usuario Actualizado",
                     "Datos actualizados correctamente.",
@@ -107,5 +109,29 @@ export class UsuarioService {
         localStorage.removeItem("token");
         localStorage.removeItem("usuario");
         this.router.navigate(["/login"]);
+    }
+
+    getUsuarios(url: string) {
+        return this.http.get(url);
+    }
+
+    borrarUsuario(id: string) {
+        let url = environment.API_URL + "usuario/" + id;
+
+        let headers = new HttpHeaders({
+            Authorization: "Bearer " + this.token,
+            "Content-Type": "application/json"
+        });
+
+        return this.http
+            .delete(url, { headers: headers })
+            .map((response: any) => {
+                swal(
+                    "Usuario Eliminado",
+                    "El usuario ha sido eliminado de la base de datos.",
+                    "success"
+                );
+                return true;
+            });
     }
 }
