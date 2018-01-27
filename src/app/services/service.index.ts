@@ -1,3 +1,6 @@
+export {
+    ModalUploadService
+} from "./../components/modal-upload/modal-upload.service";
 export { UploadService } from "./upload/upload.service";
 export { AuthGuard } from "./guards/auth.guard";
 export { UsuarioService } from "./usuario/usuario.service";

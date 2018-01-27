@@ -1,7 +1,10 @@
-import { environment } from "./../../../environments/environment";
-import { UsuarioService } from "./../../services/service.index";
-import { Usuario } from "./../../models/usuario.model";
 import { Component, OnInit } from "@angular/core";
+import { environment } from "./../../../environments/environment";
+import {
+    UsuarioService,
+    ModalUploadService
+} from "./../../services/service.index";
+import { Usuario } from "./../../models/usuario.model";
 declare var swal: any;
 
 @Component({
@@ -12,27 +15,38 @@ declare var swal: any;
 export class UsuariosComponent implements OnInit {
     usuarios: Usuario[] = [];
     pag: number = 1;
-    cant: number = 10;
+    cant: number = 5;
+    url: string;
     paginacion: any;
     loading: boolean;
 
-    constructor(public usuarioService: UsuarioService) {}
+    constructor(
+        public usuarioService: UsuarioService,
+        public modalUploadService: ModalUploadService
+    ) {}
 
     ngOnInit() {
         this.getUsuarios();
+        this.modalUploadService.notificacion.subscribe(response =>
+            this.getUsuarios(this.url)
+        );
+    }
+
+    mostrarModal(id: string) {
+        this.modalUploadService.mostrarModal("usuarios", id);
     }
 
     getUsuarios(url?: string) {
+        console.log(url);
         this.loading = true;
         if (!url) {
-            url =
-                environment.API_URL +
-                "usuario?pag=" +
-                this.pag +
-                "&cant=" +
-                this.cant;
+            this.url = environment.API_URL + "usuario?pag=1&cant=" + this.cant;
+        } else {
+            this.url = url;
         }
-        this.usuarioService.getUsuarios(url).subscribe((response: any) => {
+        this.usuarioService.getUsuarios(this.url).subscribe((response: any) => {
+            console.log(response);
+            this.pag = response.paginacion.curentPage;
             this.loading = false;
             this.usuarios = response.usuarios;
             this.paginacion = response.paginacion;
@@ -40,9 +54,8 @@ export class UsuariosComponent implements OnInit {
     }
 
     buscarUsuarios(busqueda: string) {
-        let url;
         if (busqueda) {
-            url =
+            this.url =
                 environment.API_URL +
                 "busqueda/usuarios/" +
                 busqueda +
@@ -50,9 +63,13 @@ export class UsuariosComponent implements OnInit {
                 this.pag +
                 "&cant=" +
                 this.cant;
+        } else {
+            this.url = environment.API_URL + "usuario?pag=1&cant=" + this.cant;
         }
 
-        this.getUsuarios(url);
+        console.log(this.url);
+
+        this.getUsuarios(this.url);
     }
 
     borrarUsuario(usuario: Usuario) {
@@ -67,7 +84,7 @@ export class UsuariosComponent implements OnInit {
 
             if (deleted) {
                 this.usuarioService.borrarUsuario(usuario._id).subscribe(() => {
-                    this.getUsuarios();
+                    this.getUsuarios(this.url);
                 });
             }
         });

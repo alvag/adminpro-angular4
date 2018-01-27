@@ -7,7 +7,8 @@ import {
     SharedService,
     UsuarioService,
     AuthGuard,
-    UploadService
+    UploadService,
+    ModalUploadService
 } from "./service.index";
 
 @NgModule({
@@ -19,7 +20,8 @@ import {
         SharedService,
         UsuarioService,
         AuthGuard,
-        UploadService
+        UploadService,
+        ModalUploadService
     ]
 })
 export class ServiceModule {}
