@@ -3,13 +3,18 @@ import { Usuario } from "../../models/usuario.model";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
 import { Router } from "@angular/router";
+import { UploadService } from "../upload/upload.service";
 
 @Injectable()
 export class UsuarioService {
     usuario: Usuario;
     token: string = "";
 
-    constructor(private http: HttpClient, private router: Router) {
+    constructor(
+        private http: HttpClient,
+        private router: Router,
+        private uploadService: UploadService
+    ) {
         this.token = localStorage.getItem("token");
         this.usuario = JSON.parse(localStorage.getItem("usuario"));
     }
@@ -54,6 +59,23 @@ export class UsuarioService {
                     "success"
                 );
                 return true;
+            });
+    }
+
+    uploadImg(file: File, id: string) {
+        this.uploadService
+            .upload(file, "usuarios", id)
+            .then((response: any) => {
+                this.usuario.img = response.usuario.img;
+                this.saveUserData(this.token, this.usuario);
+                swal(
+                    "Foto Actualizada",
+                    "La fotografía fue actualizada correctamente.",
+                    "success"
+                );
+            })
+            .catch(error => {
+                console.log(error);
             });
     }
 

@@ -31,15 +31,16 @@
 
     <div class="col-lg-5">
         <div class="card">
-            <div class="card-body">
+            <div class="card-body" align="center">
                 <h4 class="card-title">Fotografía</h4>
                 <h6 class="card-subtitle">Selecciona una imagen para tu perfil</h6>
 
-                <img src="" alt="">
-                <input type="file">
+                <img *ngIf="!imgTemp" [src]="usuario.img | imagen" alt="Fotografía de Perfil" class="w150 pb-2">
+                <img *ngIf="imgTemp" [src]="imgTemp" alt="Fotografía de Perfil" class="w150 pb-2">
+                <input (change)="selectImg($event.target.files[0])" type="file">
                 <br><br>
 
-                <button type="button" class="btn btn-success btn-block waves-effect waves-light m-r-10">
+                <button (click)="uploadImg()" [disabled]="!img" type="button" class="btn btn-success btn-block waves-effect waves-light m-r-10">
                         <i class="fa fa-save"></i>
                         Actualizar Foto
                 </button>
