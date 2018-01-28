@@ -88,7 +88,7 @@ export class UsuarioService {
             localStorage.removeItem("email");
         }
 
-        let url = environment.API_URL + "login";
+        let url = environment.API_URL + "signin";
         return this.http.post(url, usuario).map((response: any) => {
             this.saveUserData(response.token, response.usuario);
             return true;
@@ -96,7 +96,7 @@ export class UsuarioService {
     }
 
     loginGoogle(token: string) {
-        let url = environment.API_URL + "login/google";
+        let url = environment.API_URL + "signin/google";
         return this.http.post(url, { token }).map((response: any) => {
             this.saveUserData(response.token, response.usuario);
             return true;
