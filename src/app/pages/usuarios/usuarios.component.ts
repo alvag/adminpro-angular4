@@ -37,7 +37,6 @@ export class UsuariosComponent implements OnInit {
     }
 
     getUsuarios(url?: string) {
-        console.log(url);
         this.loading = true;
         if (!url) {
             this.url = environment.API_URL + "usuario?pag=1&cant=" + this.cant;
@@ -45,7 +44,6 @@ export class UsuariosComponent implements OnInit {
             this.url = url;
         }
         this.usuarioService.getUsuarios(this.url).subscribe((response: any) => {
-            console.log(response);
             this.pag = response.paginacion.curentPage;
             this.loading = false;
             this.usuarios = response.usuarios;
@@ -67,8 +65,6 @@ export class UsuariosComponent implements OnInit {
             this.url = environment.API_URL + "usuario?pag=1&cant=" + this.cant;
         }
 
-        console.log(this.url);
-
         this.getUsuarios(this.url);
     }
 
@@ -80,8 +76,6 @@ export class UsuariosComponent implements OnInit {
             buttons: true,
             dangerMode: true
         }).then(deleted => {
-            console.log(deleted);
-
             if (deleted) {
                 this.usuarioService.borrarUsuario(usuario._id).subscribe(() => {
                     this.getUsuarios(this.url);

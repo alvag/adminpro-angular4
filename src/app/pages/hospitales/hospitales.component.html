@@ -1,0 +1,82 @@
+<div class="row  animated fadeIn">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <input #input (keyup)="buscarHospitales(input.value)" type="text" class="form-control" placeholder="Buscar hospital">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="loading" class="row animated fadeIn">
+
+    <div class="col-12">
+        <div class="alert alert-warning text-center">
+            <strong>Cargando</strong>
+            <br>
+            <i class="fa fa-refresh fa-spin fa-2x"></i>
+            <br>
+            <span>Espere por favor</span>
+        </div>
+    </div>
+
+</div>
+
+<div class="row animated fadeIn">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="card-title">
+                    <div class="pull-right">
+                        <button (click)="registrarHospital()" type="button" class="btn btn-primary">
+                            <i class="fa fa-plus"></i>
+                            Registrar Hospital
+                        </button>
+                    </div>
+
+                    <h3 *ngIf="paginacion">Hospitales registrados (<small>{{paginacion.total}}</small>)</h3>
+                </div>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="w70">Imagen</th>
+                            <th>Hospital</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let hospital of hospitales">
+                            <td>
+                                <img (click)="mostrarModal(hospital._id)" [src]="hospital.img | imagen:'hospitales'" alt="Fotografía del Hospital" class="w50 pointer">
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <input type="text" [(ngModel)]="hospital.nombre" name="nombre" class="form-control" id="nombre" placeholder="Nombre del hospital" required>
+                                </div>
+                            </td>
+                            <td>
+                                <button (click)="actualizarHospital(hospital)" class="btn btn-primary" title="Actualizar Hospital">
+                                    <i class="fa fa-save"></i>
+                                </button>
+
+                                <button (click)="borrarHospital(hospital)" class="btn btn-danger" title="Eliminar Hospital">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button (click)="cargarHospitales(paginacion.previousPage)" [disabled]="paginacion && !paginacion.previousPage" class="btn btn-secondary">Anteriores</button>
+
+                <button (click)="cargarHospitales(paginacion.nextPage)" [disabled]="paginacion && !paginacion.nextPage" class="btn btn-secondary">Siguientes</button>
+
+            </div>
+        </div>
+    </div>
+</div>
