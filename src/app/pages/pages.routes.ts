@@ -1,3 +1,5 @@
+import { MedicoComponent } from "./medicos/medico.component";
+import { MedicosComponent } from "./medicos/medicos.component";
 import { RxjsComponent } from "./rxjs/rxjs.component";
 import { RouterModule, Routes } from "@angular/router";
 import { ProgressComponent } from "./progress/progress.component";
@@ -62,6 +64,16 @@ const pagesRoutes: Routes = [
                 path: "hospitales",
                 component: HospitalesComponent,
                 data: { titulo: "Mantenimiento de Hospitales" }
+            },
+            {
+                path: "medicos",
+                component: MedicosComponent,
+                data: { titulo: "Mantenimiento de Médicos" }
+            },
+            {
+                path: "medico/:id",
+                component: MedicoComponent,
+                data: { titulo: "Actualizar Médico" }
             },
             { path: "", redirectTo: "/dashboard", pathMatch: "full" }
         ]

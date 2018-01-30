@@ -32,7 +32,7 @@ export class HospitalService {
             .map((response: any) => {
                 swal(
                     "Hospital Eliminado",
-                    "El hosital ha sido eliminado de la base de datos.",
+                    "El hospital ha sido eliminado de la base de datos.",
                     "success"
                 );
                 return true;

@@ -1,3 +1,4 @@
+export { MedicoService } from "./medico/medico.service";
 export { HospitalService } from "./hospital/hospital.service";
 export {
     ModalUploadService

@@ -1,0 +1,65 @@
+<div class="row  animated fadeIn">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <input #input (keyup)="buscarMedicos(input.value)" type="text" class="form-control" placeholder="Buscar médico">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="card-title">
+                    <div class="pull-right">
+                        <button [routerLink]="['/medico', 'nuevo']" type="button" class="btn btn-primary">
+                            <i class="fa fa-plus"></i>
+                            Registrar Médico
+                        </button>
+                    </div>
+
+                    <h3 *ngIf="paginacion">Médicos registrados (<small>{{paginacion.total}}</small>)</h3>
+                </div>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <td>Fotografía</td>
+                            <td>Médico</td>
+                            <td>Hospital</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let medico of medicos">
+                            <td>
+                                <img [src]="medico.img | imagen:'medicos'" alt="Fotografía de Perfil" class="w50 img-circle">
+                            </td>
+                            <td>{{medico.nombre}}</td>
+                            <td>{{medico.hospital.nombre}}</td>
+                            <td>
+                                <button [routerLink]="['/medico', medico._id]" class="btn btn-primary" title="Editar Médico">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+
+                                <button (click)="borrarMedico(medico)" class="btn btn-danger" title="Eliminar Médico">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button (click)="cargarMedicos(paginacion.previousPage)" [disabled]="paginacion && !paginacion.previousPage" class="btn btn-secondary">Anteriores</button>
+
+                <button (click)="cargarMedicos(paginacion.nextPage)" [disabled]="paginacion && !paginacion.nextPage" class="btn btn-secondary">Siguientes</button>
+
+            </div>
+        </div>
+    </div>
+</div>

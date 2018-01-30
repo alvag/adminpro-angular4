@@ -45,7 +45,6 @@ export class ModalUploadComponent implements OnInit {
     }
 
     subirImagen() {
-        console.log(this.img);
         this.uploadService
             .upload(
                 this.img,
@@ -53,7 +52,6 @@ export class ModalUploadComponent implements OnInit {
                 this.modalUploadService.id
             )
             .then(response => {
-                console.log(response);
                 this.modalUploadService.notificacion.emit(response);
                 this.cerrarModal();
             })
