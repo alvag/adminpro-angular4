@@ -4,28 +4,46 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
 import { Router } from "@angular/router";
 import { UploadService } from "../upload/upload.service";
+import "rxjs/add/operator/map";
+import "rxjs/add/operator/catch";
+import "rxjs/add/observable/throw";
+import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class UsuarioService {
     usuario: Usuario;
     token: string = "";
+    menu: any[] = [];
 
     constructor(
         private http: HttpClient,
         private router: Router,
         private uploadService: UploadService
     ) {
-        this.token = localStorage.getItem("token");
-        this.usuario = JSON.parse(localStorage.getItem("usuario"));
+        this.cargarStorage();
     }
 
-    saveUserData(token: string, usuario: Usuario) {
+    cargarStorage() {
+        if (localStorage.getItem("token")) {
+            this.token = localStorage.getItem("token");
+            this.usuario = JSON.parse(localStorage.getItem("usuario"));
+            this.menu = JSON.parse(localStorage.getItem("menu"));
+        } else {
+            this.token = "";
+            this.usuario = null;
+            this.menu = null;
+        }
+    }
+
+    saveUserData(token: string, usuario: Usuario, menu: any) {
         localStorage.setItem("id", usuario._id);
         localStorage.setItem("token", token);
         localStorage.setItem("usuario", JSON.stringify(usuario));
+        localStorage.setItem("menu", JSON.stringify(menu));
 
         this.usuario = usuario;
         this.token = token;
+        this.menu = menu;
     }
 
     isAuth(): boolean {
@@ -35,10 +53,16 @@ export class UsuarioService {
     registrarUsuario(usuario: Usuario) {
         let url = environment.API_URL + "usuario";
 
-        return this.http.post(url, usuario).map((response: any) => {
-            swal("Usuario creado", usuario.email, "success");
-            return response.usuario;
-        });
+        return this.http
+            .post(url, usuario)
+            .map((response: any) => {
+                swal("Usuario creado", usuario.email, "success");
+                return response.usuario;
+            })
+            .catch(err => {
+                swal(err.error.mensaje, err.error.errors.message, "error");
+                return Observable.throw(err);
+            });
     }
 
     actualizarUsuario(usuario: Usuario) {
@@ -53,7 +77,7 @@ export class UsuarioService {
             .put(url, usuario, { headers: headers })
             .map((response: any) => {
                 if (response.usuario._id === this.usuario._id) {
-                    this.saveUserData(this.token, response.usuario);
+                    this.saveUserData(this.token, response.usuario, this.menu);
                 }
                 swal(
                     "Usuario Actualizado",
@@ -61,6 +85,10 @@ export class UsuarioService {
                     "success"
                 );
                 return true;
+            })
+            .catch(err => {
+                swal(err.error.mensaje, err.error.errors.message, "error");
+                return Observable.throw(err);
             });
     }
 
@@ -69,7 +97,7 @@ export class UsuarioService {
             .upload(file, "usuarios", id)
             .then((response: any) => {
                 this.usuario.img = response.usuario.img;
-                this.saveUserData(this.token, this.usuario);
+                this.saveUserData(this.token, this.usuario, this.menu);
                 swal(
                     "Foto Actualizada",
                     "La fotografía fue actualizada correctamente.",
@@ -89,16 +117,26 @@ export class UsuarioService {
         }
 
         let url = environment.API_URL + "login";
-        return this.http.post(url, usuario).map((response: any) => {
-            this.saveUserData(response.token, response.usuario);
-            return true;
-        });
+        return this.http
+            .post(url, usuario)
+            .map((response: any) => {
+                this.saveUserData(
+                    response.token,
+                    response.usuario,
+                    response.menu
+                );
+                return true;
+            })
+            .catch(err => {
+                swal("Error en el login", err.error.mensaje, "error");
+                return Observable.throw(err);
+            });
     }
 
     loginGoogle(token: string) {
         let url = environment.API_URL + "login/google";
         return this.http.post(url, { token }).map((response: any) => {
-            this.saveUserData(response.token, response.usuario);
+            this.saveUserData(response.token, response.usuario, response.menu);
             return true;
         });
     }
@@ -106,8 +144,10 @@ export class UsuarioService {
     logOut() {
         this.usuario = null;
         this.token = "";
+        this.menu = [];
         localStorage.removeItem("token");
         localStorage.removeItem("usuario");
+        localStorage.removeItem("menu");
         this.router.navigate(["/login"]);
     }
 

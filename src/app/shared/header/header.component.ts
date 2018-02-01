@@ -1,6 +1,7 @@
 import { UsuarioService } from "./../../services/service.index";
 import { Component, OnInit } from "@angular/core";
 import { Usuario } from "../../models/usuario.model";
+import { Router } from "@angular/router";
 
 @Component({
     selector: "app-header",
@@ -9,9 +10,16 @@ import { Usuario } from "../../models/usuario.model";
 })
 export class HeaderComponent implements OnInit {
     usuario: Usuario;
-    constructor(public usuarioService: UsuarioService) {}
+    constructor(
+        private router: Router,
+        public usuarioService: UsuarioService
+    ) {}
 
     ngOnInit() {
         this.usuario = this.usuarioService.usuario;
+    }
+
+    buscar(busqueda: string) {
+        this.router.navigate(["/busqueda", busqueda]);
     }
 }
