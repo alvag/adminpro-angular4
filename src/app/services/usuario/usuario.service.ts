@@ -35,6 +35,28 @@ export class UsuarioService {
         }
     }
 
+    refreshToken() {
+        let url = environment.API_URL + "login/refresh-token";
+
+        let headers = new HttpHeaders({
+            Authorization: "Bearer " + this.token,
+            "Content-Type": "application/json"
+        });
+
+        return this.http
+            .get(url, { headers: headers })
+            .map((response: any) => {
+                this.token = response.token;
+                console.log(this.token);
+                localStorage.setItem("token", this.token);
+                return true;
+            })
+            .catch(err => {
+                this.logOut();
+                return Observable.throw(err);
+            });
+    }
+
     saveUserData(token: string, usuario: Usuario, menu: any) {
         localStorage.setItem("id", usuario._id);
         localStorage.setItem("token", token);

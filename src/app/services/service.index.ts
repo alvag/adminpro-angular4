@@ -1,3 +1,4 @@
+export { RefreshTokenGuard } from "./guards/refresh-token.guard";
 export { AdminGuard } from "./guards/admin.guard";
 export { MedicoService } from "./medico/medico.service";
 export { HospitalService } from "./hospital/hospital.service";
