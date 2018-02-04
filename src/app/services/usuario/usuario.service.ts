@@ -194,6 +194,10 @@ export class UsuarioService {
                     "success"
                 );
                 return true;
+            })
+            .catch(err => {
+                swal(err.error.mensaje, err.error.errors.message, "error");
+                return Observable.throw(err);
             });
     }
 }
